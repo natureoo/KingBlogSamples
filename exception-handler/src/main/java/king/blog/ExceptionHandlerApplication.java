@@ -10,5 +10,7 @@ public class ExceptionHandlerApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ExceptionHandlerApplication.class, args);
+		System.out.println("swagger:http://localhost:8080/swagger-ui.html");
+
 	}
 }

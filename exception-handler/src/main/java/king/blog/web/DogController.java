@@ -2,7 +2,6 @@ package king.blog.web;
 
 import king.blog.common.exception.BusinessException;
 import king.blog.common.resp.AppResponse;
-import king.blog.common.util.BSUtil;
 import king.blog.common.validates.Add;
 import king.blog.common.validates.Update;
 import king.blog.model.Dog;
@@ -11,9 +10,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
 
 /**
  * Created by kinginblue on 2017/4/10.
@@ -30,16 +30,17 @@ public class DogController {
     /**
      * 手动处理 Service 层异常和数据校验异常的示例
      *
+     * 当使用了 @Validated + @RequestBody 注解但是没有在绑定的数据对象后面跟上 Errors 类型的参数声明的话，Spring MVC 框架会抛出 MethodArgumentNotValidException 异常。
      * @param dog
-     * @param errors
      * @return
      */
     @PostMapping(value = "")
-    AppResponse add(@Validated(Add.class) @RequestBody Dog dog, Errors errors){
+//    AppResponse add(@Validated(Add.class) @RequestBody Dog dog, Errors errors){
+    AppResponse add(@Validated(Add.class) @RequestBody Dog dog){
         AppResponse resp = new AppResponse();
         try {
             // 数据校验
-            BSUtil.controllerValidate(errors);
+//            BSUtil.controllerValidate(errors);
 
             // 执行业务
             Dog newDog = dogService.save(dog);
@@ -65,6 +66,9 @@ public class DogController {
      */
     @PatchMapping(value = "")
     AppResponse update(@Validated(Update.class) @RequestBody Dog dog){
+//    AppResponse update(@Validated(Update.class) @RequestBody Dog dog, @ModelAttribute("user") String user, Date date){
+//        System.out.println("user:" + user);
+//        System.out.println("date:" + date);
         AppResponse resp = new AppResponse();
 
         // 执行业务
@@ -73,6 +77,14 @@ public class DogController {
         // 返回数据
         resp.setData(newDog);
 
+        return resp;
+    }
+
+    @PostMapping(value = "model")
+    AppResponse update( @ModelAttribute("user") String user, Date date){
+        System.out.println("user:" + user);
+        System.out.println("date:" + date);
+        AppResponse resp = new AppResponse();
         return resp;
     }
 

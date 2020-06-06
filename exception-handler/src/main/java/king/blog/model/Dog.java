@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 public class Dog {
 
     @NotNull(message = "{Dog.id.non}", groups = {Update.class})
-    @Min(value = 1, message = "{Dog.age.lt1}", groups = {Update.class})
+    @Min(value = 1, message = "{Dog.id.lt1}", groups = {Update.class})
     private Long id;
 
     @NotBlank(message = "{Dog.name.non}", groups = {Add.class, Update.class})

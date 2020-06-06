@@ -4,10 +4,11 @@ import king.blog.common.exception.BusinessException;
 import king.blog.common.resp.AppResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.format.datetime.DateFormatter;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by kinginblue on 2017/4/10.
@@ -17,6 +18,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class GlobalExceptionHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
+    @InitBinder
+    public void initMyBinder(WebDataBinder binder) {
+        binder.addCustomFormatter(new DateFormatter("yyyy-MM-dd HH:mm:ss"));
+    }
+
+    @ModelAttribute
+    public void addMyAttribute(Model model) {
+        model.addAttribute("user", "nature");
+    }
+
 
     /**
      * 处理所有不可知的异常
